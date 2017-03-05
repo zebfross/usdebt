@@ -1,0 +1,17 @@
+.chart {
+    width: 95%;
+    min-height: 350px;
+}
+
+.president-image img {
+    height: 170px;
+    width: 135px;
+}
+
+.president-container {
+    width: 165px;
+    float: left;
+}
+.presidentList {
+    padding-top: 10px;
+}
