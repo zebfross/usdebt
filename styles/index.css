@@ -11,6 +11,7 @@
 .president-container {
     width: 165px;
     float: left;
+    cursor: pointer;
 }
 .presidentList {
     padding-top: 10px;

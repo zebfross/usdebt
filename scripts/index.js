@@ -9,6 +9,7 @@ var interestRate = .024;
 var chart;
 var TOTAL = 1;
 var DATE = 0;
+var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
 
 var inflationRates = {
 "1971": 0.044,
@@ -206,7 +207,8 @@ function DebtViewModel() {
                     lastPoint++;
                     if(lastPoint == rows.length) {
                         rows.push([]);
-                        rows[lastPoint].push(i);
+                        //var diffDays = Math.round(Math.abs((startPoint[DATE].getTime() - datum[DATE].getTime())/(oneDay)));
+                        rows[lastPoint].push(lastPoint);
                         for(var p=0; p<pres; ++p) {
                             if(!this.presEnabled(presidents[p].id)) {
                                 continue;
@@ -256,7 +258,7 @@ function DebtViewModel() {
         legend: {textStyle: {color: 'white'}},
         backgroundColor: "#303030",
         hAxis: {
-          title: 'Time',
+          title: (this.continuous()) ? 'Date recorded' : 'Sequential Order',
           textStyle: {color: 'white'},
           titleTextStyle: {color: 'white'},
         },
@@ -275,25 +277,28 @@ function DebtViewModel() {
 
       var chart = new google.visualization.LineChart(document.getElementById('usdebtChart'));
       chart.draw(data, options);
-        
     }, this).extend({throttle: 150});
 }
 
 model = new DebtViewModel();
-window.onload = function() {
-    $('[data-toggle="tooltip"]').tooltip();
-
-    var scaleFactor = 1000000;
+window.addEventListener("load", function() {
+    var scaleFactor = 1000000; // one million
     for(var pres=0; pres<presidents.length; ++pres) {
         for(var i=0; i < presidents[pres].dataPoints.length; ++i) {
             presidents[pres].dataPoints[i][TOTAL] = presidents[pres].dataPoints[i][TOTAL] / scaleFactor;
         }
+
+        presidents[pres].dataPoints = presidents[pres].dataPoints.sort(function(a, b) {
+            if(a[0] < b[0]) {
+                return -1;
+            }
+            return 1;
+        });
     }
 
     ko.applyBindings(model);
+});
 
-};
-
-$(window).resize(function(e) {
+window.addEventListener("resize", function(e) {
     model.screenSize(Math.random()*100);
 });

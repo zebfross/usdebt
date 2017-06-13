@@ -1,12 +1,8 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href=".\styles\bootstrap.min.css" />
         <link rel="stylesheet" href=".\styles\index.css" />
-        <script src=".\scripts\jquery.js" type="text/javascript"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <script type="text/javascript" src=".\scripts\knockout.js"></script>
-
-        <style type="text/css" src="index.css"></style>
     </head>
     <body>
 
@@ -24,7 +20,8 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                <li class=""><a href="about.html">About</a></li>
             </ul>
             </div>
         </div>
@@ -33,7 +30,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="list-group">
-                        <a href="#" data-toggle="tooltip" data-placement="right" title="Adjust historical numbers for inflation" id="btnInflation" type="button" class="list-group-item" data-bind="click: toggleInflation, css: {active: !inflation()}">Inflation Adjusted</a>
+                        <a href="#" data-toggle="tooltip" data-placement="right" title="Adjust for inflation and average 2.4% interest rate" id="btnInflation" type="button" class="list-group-item" data-bind="click: toggleInflation, css: {active: !inflation()}">Inflation Adjusted</a>
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Debt totals or debt specific to each President" id="btnAbsolute" type="button" class="list-group-item" data-bind="text: absoluteText, click: toggleAbsolute, css: {active: !absolute()}">Absolute</a>
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Show as % changed" id="btnPercentage" type="button" class="list-group-item" data-bind="click: togglePercentage, css: {active: !percentage()}">Percentage</a>
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Continuous line or stacked view" id="btnContinuous" type="button" class="list-group-item" data-bind="text: continuousText, click: toggleContinuous, css: {active: !continuous()}">Continuous</a>
@@ -55,7 +52,7 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'trump1')">
                         <div class="panel-body">
                             <span class="president-image">
-                                <img src="./images/trump.png" />
+                                <img src="./images/trump.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Trump 2017 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('trump1'),  'glyphicon-minus': presEnabled('trump1')}"></i></div>
@@ -63,7 +60,7 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'obama2')">
                         <div class="panel-body">
                             <span class="president-image">
-                            <img src="./images/obama2.png" />
+                            <img src="./images/obama2.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Obama 2013 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('obama2'),  'glyphicon-minus': presEnabled('obama2')}"></i></div>
@@ -71,7 +68,7 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'obama1')">
                         <div class="panel-body">
                             <span class="president-image">
-                            <img src="./images/obama1.png" />
+                            <img src="./images/obama1.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Obama 2009 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('obama1'),  'glyphicon-minus': presEnabled('obama1')}"></i></div>
@@ -79,7 +76,7 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'bush-jr2')">
                         <div class="panel-body">
                             <span class="president-image">
-                            <img src="./images/bush-jr2.png" />
+                            <img src="./images/bush-jr2.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Bush Jr 2005 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('bush-jr2'),  'glyphicon-minus': presEnabled('bush-jr2')}"></i></div>
@@ -95,7 +92,7 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'clinton2')">
                         <div class="panel-body">
                             <span class="president-image">
-                            <img src="./images/clinton2.png" />
+                            <img src="./images/clinton2.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Clinton 1997 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('clinton2'),  'glyphicon-minus': presEnabled('clinton2')}"></i></div>
@@ -103,7 +100,7 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'clinton1')">
                         <div class="panel-body">
                             <span class="president-image">
-                            <img src="./images/clinton1.png" />
+                            <img src="./images/clinton1.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Clinton 1993 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('clinton1'),  'glyphicon-minus': presEnabled('clinton1')}"></i></div>
@@ -111,31 +108,12 @@
                     <div class="panel panel-default president-container" data-bind="click: togglePres.bind($data, 'bush-sr')">
                         <div class="panel-body">
                             <span class="president-image">
-                            <img src="./images/bush-sr.png" />
+                            <img src="./images/bush-sr.jpg" />
                             </span>
                         </div>
                         <div class="panel-footer">Bush Sr 1989 <i class="glyphicon pull-right" data-bind="css: {'glyphicon-plus': !presEnabled('bush-sr'),  'glyphicon-minus': presEnabled('bush-sr')}"></i></div>
                     </div>
                 </div>
-                <!--<div class="col-md-1">
-                    <span class="president-image">
-                    </span>
-                </div>
-                <div class="col-md-1">
-                    <span class="president-image">
-                        <img src="./images/bush-jr.png" />
-                    </span>
-                </div>
-                <div class="col-md-1">
-                    <span class="president-image">
-                        <img src="./images/clinton.png" />
-                    </span>
-                </div>
-                <div class="col-md-1">
-                    <span class="president-image">
-                        <img src="./images/bush-sr.png" />
-                    </span>
-                </div>-->
             </div>
             <footer>
                 
@@ -147,16 +125,8 @@
                 </div>
             </footer>
             </div>
-        <script type="text/javascript" src=".\node_modules\sizzle\dist\sizzle.min.js"></script>
+        <script type="text/javascript" src=".\scripts\knockout.js"></script>
         <script type="text/javascript" src=".\scripts\index.js"></script>
-        <script type="text/javascript" src=".\scripts\bush-2.js"></script>
-        <script type="text/javascript" src=".\scripts\clinton-1.js"></script>
-        <script type="text/javascript" src=".\scripts\clinton-2.js"></script>
-        <script type="text/javascript" src=".\scripts\bush-jr-1.js"></script>
-        <script type="text/javascript" src=".\scripts\bush-jr-2.js"></script>
-        <script type="text/javascript" src=".\scripts\obama-1.js"></script>
-        <script type="text/javascript" src=".\scripts\obama-2.js"></script>
-        <script type="text/javascript" src=".\scripts\trump-1.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
             // Load the Visualization API and the corechart package.
