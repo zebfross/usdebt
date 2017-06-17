@@ -1,7 +1,7 @@
 var request = require('request');
 var xml = require('xml2js');
 var XRegExp = require('xregexp');
-var currentData = require('../scripts/trump-1.js').data[0].dataPoints;
+var currentData = require('../scripts/data/trump-1.js').data[0].dataPoints;
 var fs = require('fs');
 
 function alreadyHaveDate(d) {
@@ -57,7 +57,7 @@ request('https://www.treasurydirect.gov/NP/debt/rss', function (error, response,
             var total = parseTotal(items[i]['content:encoded'][0]);
             var line = 'presidents[presidents.length-1].dataPoints.push([new Date("';
             line = line + d.toDateString() + '"), ' + total + ']);\n';
-            fs.appendFile('scripts/trump-1.js', line, function(err) {if(err) console.log(err);});
+            fs.appendFile('scripts/data/trump-1.js', line, function(err) {if(err) console.log(err);});
           }
       }
   });

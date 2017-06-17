@@ -5,7 +5,6 @@ var presidentsPercentage = [];
 var presidentsOverlapped = [];
 var serverRoot = "data";
 var scale = 10;
-var interestRate = .024;
 var chart;
 var TOTAL = 1;
 var DATE = 0;
@@ -73,9 +72,9 @@ function adjustForInflation(value, date) {
         return value;
     }
     var dayOfYear = getDayOfYear(date);
-    value = value * (((inflationRates[date.getFullYear()] + interestRate) / 365) * (365 - dayOfYear) + 1);
+    value = value * ((inflationRates[date.getFullYear()] / 365) * (365 - dayOfYear) + 1);
     for (var i=date.getFullYear()+1; i < 2017; ++i) {
-        value = value * (1 + inflationRates[i] + interestRate);
+        value = value * (1 + inflationRates[i]);
     }
     return value;
 }
@@ -105,179 +104,48 @@ function min(arr, start, end) {
     return m;
 }
 
-function DebtViewModel() {
-    this.applyDefaultOptions = function() {
-        this.inflation(true);
-        this.absolute(true);
-        this.percentage(false);
-        this.continuous(true);
-        this.selectedPresidents.removeAll();
-        this.selectedPresidents.push("trump1");
-        this.selectedPresidents.push("obama2");
-        this.selectedPresidents.push("obama1");
-        this.selectedPresidents.push("bush-jr2");
-    };
-    this.selectedPresidents = ko.observableArray(["trump1", "obama2", "obama1", "bush-jr2"]);
-    this.presEnabled = function(id) {
-        if(this.selectedPresidents.indexOf(id) > -1) {
-            return true;
-        }
-        return false;
-    };
-    this.togglePres = function(id) {
-        var index = this.selectedPresidents.indexOf(id);
-        if(index > -1) {
-            this.selectedPresidents.splice(index, 1);
-        } else {
-            this.selectedPresidents.push(id);
-        }
-    };
-    this.scale = ko.observable(10);
-    this.googleLoaded = ko.observable(false);
-    this.inflation = ko.observable(true);
-    this.toggleInflation = function() {
-        this.inflation(!this.inflation());
-    };
-    this.absolute = ko.observable(true);
-    this.toggleAbsolute = function() {
-        this.absolute(!this.absolute());
-    };
-    this.absoluteText = ko.computed(function() {
-        if(!this.absolute())
-            return "Absolute";
-        else
-            return "Relative";
-    }, this);
-    this.percentage = ko.observable(false);
-    this.togglePercentage = function() {
-        this.percentage(!this.percentage());
-    };
-    this.continuous = ko.observable(true);
-    this.toggleContinuous = function() {
-        this.continuous(!this.continuous());
-    };
-    this.continuousText = ko.computed(function() {
-        if(!this.continuous())
-            return "Continuous";
-        else
-            return "Stacked";
-    }, this);
-    this.screenSize = ko.observable(1);
-    this.render = ko.computed(function() {
-        if(!this.googleLoaded() || this.screenSize() < 0) {
-            return;
-        }
+var ui = {
+    render: function(rows) {
+        var options = {
+            legend: {textStyle: {color: 'white'}},
+            backgroundColor: "#303030",
+            hAxis: {
+            title: (model.continuous()) ? 'Date recorded' : 'Days in Office',
+            textStyle: {color: 'white'},
+            titleTextStyle: {color: 'white'},
+            },
+            vAxis: {
+            title: 'Debt (in Millions)',
+            textStyle: {color: 'white'},
+            titleTextStyle: {color: 'white'}
+            },
+            interpolateNulls: true,
+            explorer: { 
+                actions: ['dragToZoom', 'rightClickToReset'],
+                axis: 'horizontal',
+                maxZoomIn: .025
+            }
+        };
+
         var data = new google.visualization.DataTable();
-        var rows = [];
-        if(this.continuous() && this.selectedPresidents().length > 0) {
+        if(model.continuous() && model.selectedPresidents().length > 0) {
             data.addColumn('date', 'X');
-        } else if(this.selectedPresidents().length > 0) {
+        } else if(model.selectedPresidents().length > 0) {
             data.addColumn('number', 'X');
         }
+
         for(var pres=0; pres<presidents.length; ++pres) {
-            if(!this.presEnabled(presidents[pres].id)) {
+            if(!model.presEnabled(presidents[pres].id)) {
                 continue;
             }
             data.addColumn('number', presidents[pres].title);
-            var startPoint = presidents[pres].dataPoints[0];
-            var startTotal = startPoint[TOTAL];
-            var lastPoint = -1;
-            var lastI = -1;
-            for(var i=0; i < presidents[pres].dataPoints.length; ++i) {
-                if(presidents[pres].dataPoints.length > 100) {
-                    if(i % this.scale() > 0) {
-                        continue;
-                    }
-                }
-                var prevPoint = ["", 0];
-                if(lastI > -1) {
-                    prevPoint = presidents[pres].dataPoints[lastI];
-                }
-                var datum = presidents[pres].dataPoints[i];
-                var newPoint = [];
-                if(this.continuous()) {
-                    newPoint.push(datum[DATE]);
-                    for(var p=0; p < pres; ++p) {
-                        if(!this.presEnabled(presidents[p].id)) {
-                            continue;
-                        }
-                        newPoint.push(null);
-                    }
-                } else {
-                    lastPoint++;
-                    if(lastPoint == rows.length) {
-                        rows.push([]);
-                        //var diffDays = Math.round(Math.abs((startPoint[DATE].getTime() - datum[DATE].getTime())/(oneDay)));
-                        rows[lastPoint].push(lastPoint);
-                        for(var p=0; p<pres; ++p) {
-                            if(!this.presEnabled(presidents[p].id)) {
-                                continue;
-                            }
-                            rows[lastPoint].push(null);
-                        }
-                    }
-                    newPoint = rows[lastPoint];
-                }
-                var newValue = datum[TOTAL];
-                if(!this.absolute()) {
-                    newValue = newValue-startTotal;
-                }
-                if(this.inflation()) {
-                    newValue = adjustForInflation(newValue, datum[DATE]);
-                }
-                if(this.percentage()) {
-                    if(prevPoint[TOTAL] != 0) {
-                        newValue = (datum[TOTAL] / prevPoint[TOTAL] - 1) * 100;
-                    } else {
-                        newValue = 0;
-                    }
-                }
-                newPoint.push(newValue);
-                if(this.continuous()) {
-                    for(var p=pres+1; p < presidents.length; ++p) {
-                        if(!this.presEnabled(presidents[p].id)) {
-                            continue;
-                        }
-                        newPoint.push(null);
-                    }
-                    rows.push(newPoint);
-                    lastPoint = rows.length - 1;
-                }
-                lastI = i;
-            }
-            if(!this.continuous()) {
-                for(var r=lastPoint+1; r < rows.length; ++r) {
-                    rows[r].push(null);
-                }
-            }
         }
 
-      data.addRows(rows);
+        data.addRows(rows);
 
-      var options = {
-        legend: {textStyle: {color: 'white'}},
-        backgroundColor: "#303030",
-        hAxis: {
-          title: (this.continuous()) ? 'Date recorded' : 'Sequential Order',
-          textStyle: {color: 'white'},
-          titleTextStyle: {color: 'white'},
-        },
-        vAxis: {
-          title: 'Debt (in Millions)',
-          textStyle: {color: 'white'},
-          titleTextStyle: {color: 'white'}
-        },
-        interpolateNulls: false,
-        explorer: { 
-            actions: ['dragToZoom', 'rightClickToReset'],
-            axis: 'horizontal',
-            maxZoomIn: .025
-        }
-      };
-
-      var chart = new google.visualization.LineChart(document.getElementById('usdebtChart'));
-      chart.draw(data, options);
-    }, this).extend({throttle: 150});
+        var chart = new google.visualization.LineChart(document.getElementById('usdebtChart'));
+        chart.draw(data, options);
+    }
 }
 
 model = new DebtViewModel();

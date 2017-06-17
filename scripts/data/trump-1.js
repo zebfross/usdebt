@@ -104,8 +104,9 @@ presidents[presidents.length-1].dataPoints.push([new Date("Thu May 25 2017"), 19
 presidents[presidents.length-1].dataPoints.push([new Date("Wed May 24 2017"), 19845990076683.19]);
 presidents[presidents.length-1].dataPoints.push([new Date("Tue May 23 2017"), 19846034340301.91]);
 presidents[presidents.length-1].dataPoints.push([new Date("Mon May 22 2017"), 19846167124114.08]);
+presidents[presidents.length-1].dataPoints.push([new Date("Mon May 22 2017"), 19846167124114.08]);
+presidents[presidents.length-1].dataPoints.push([new Date("Mon May 22 2017"), 19846167124114.08]);
 presidents[presidents.length-1].dataPoints.push([new Date("Fri May 19 2017"), 19846211384209.15]);
 presidents[presidents.length-1].dataPoints.push([new Date("Thu May 18 2017"), 19845965893811.36]);
 presidents[presidents.length-1].dataPoints.push([new Date("Wed May 17 2017"), 19846009453270.76]);
-presidents[presidents.length-1].dataPoints.push([new Date("Wed May 17 2017"), 19846053011381.8]);
 presidents[presidents.length-1].dataPoints.push([new Date("Mon May 15 2017"), 19846183719855.51]);

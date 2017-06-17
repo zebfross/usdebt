@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="list-group">
-                        <a href="#" data-toggle="tooltip" data-placement="right" title="Adjust for inflation and average 2.4% interest rate" id="btnInflation" type="button" class="list-group-item" data-bind="click: toggleInflation, css: {active: !inflation()}">Inflation Adjusted</a>
+                        <a href="#" data-toggle="tooltip" data-placement="right" title="Adjust for inflation based on monthly historical averages" id="btnInflation" type="button" class="list-group-item" data-bind="click: toggleInflation, css: {active: !inflation()}">Inflation Adjusted</a>
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Debt totals or debt specific to each President" id="btnAbsolute" type="button" class="list-group-item" data-bind="text: absoluteText, click: toggleAbsolute, css: {active: !absolute()}">Absolute</a>
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Show as % changed" id="btnPercentage" type="button" class="list-group-item" data-bind="click: togglePercentage, css: {active: !percentage()}">Percentage</a>
                         <a href="#" data-toggle="tooltip" data-placement="right" title="Continuous line or stacked view" id="btnContinuous" type="button" class="list-group-item" data-bind="text: continuousText, click: toggleContinuous, css: {active: !continuous()}">Continuous</a>
@@ -134,7 +134,7 @@
 
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(function() {
-                model.googleLoaded(true);
+                model.renderEnabled(true);
             });
         </script>
     </body>
