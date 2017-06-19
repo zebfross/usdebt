@@ -17,7 +17,7 @@ function DebtViewModel() {
         this.selectedPresidents.push("obama1");
         this.selectedPresidents.push("bush-jr2");
     };
-    this.selectedPresidents = ko.observableArray(["trump1", /*"obama2", "obama1", "bush-jr2"*/]);
+    this.selectedPresidents = ko.observableArray(["trump1", "obama2", "obama1", "bush-jr2"]);
     this.presEnabled = function(id) {
         if(this.selectedPresidents.indexOf(id) > -1) {
             return true;

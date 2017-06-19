@@ -1,0 +1,37 @@
+{
+  "name": "us_debt",
+  "version": "1.0.0",
+  "description": "Easily view history of US debt, organized by US President.",
+  "main": "index.js",
+  "dependencies": {
+    "xml2js": "^0.4.17",
+    "request": "^2.80.0",
+    "xregexp": "^3.1.1",
+    "uglify-js": "^1.3.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
+    "mocha": "^3.4.2"
+  },
+  "scripts": {
+    "test": "mocha scripts/test/",
+    "debug": "mocha --debug-brk scripts/test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zebfross/usdebt.git"
+  },
+  "keywords": [
+    "debt",
+    "us-debt",
+    "trump",
+    "trump-debt"
+  ],
+  "author": "Zeb Fross",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zebfross/usdebt/issues"
+  },
+  "homepage": "https://github.com/zebfross/usdebt#readme"
+}

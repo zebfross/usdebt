@@ -24,16 +24,6 @@ function verifyRows(model, rows) {
     });
 }
 
-var describe, it;
-if(describe == undefined) {
-    describe = function(name, foo) {
-        foo();
-    };
-    it = function(name, foo) {
-        foo();
-    };
-}
-
 describe('Model', function () {
     describe('Render', function () {
         it('should properly render multiple presidents', function () {
@@ -71,7 +61,7 @@ describe('Model', function () {
                 selectedPresidents: ["5", "6", "7"]});
             var rows = model.render();
             verifyRows(model, rows);
-            console.log(rows);
+            assert(true, "Cool beans");
         })
     })
 })
